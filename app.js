@@ -1,20 +1,22 @@
 const { ipcRenderer } = require("electron")
-// import { transponder } from "./communicator.js";
-const {transponder} = require('./communicator')
 
+// GOOD
+document.getElementById('ping-good').onclick = () => {
+  // Send a IPC async message to electron
+  // See main.js on line 31
+  ipcRenderer.send('ping-good', 'ping')
+  document.getElementById('ping-good-response').innerText = 'Waiting..'
+}
 
-transponder(ipcRenderer)
+// Receive reply from elecron
+// See file main.js on line 37
+ipcRenderer.on('ping-good-reply', (event, response) => {
+  document.getElementById('ping-good-response').innerText = response
+})
 
-// let form = document.querySelector("form")
-// let input = document.querySelector("input")
-// let responses = document.querySelector("#responses")
-
-// form.addEventListener("submit", async (e) => {
-//     e.preventDefault()
-//     let line = input.value
-//     input.value = "ici"
-//     let responseText = await ipcRenderer.invoke("console", line)
-//     let response = document.createElement("div")
-//     response.textContent = responseText
-//     responses.appendChild(response)
-// })
+// BAD
+document.getElementById('ping-bad').onclick = () => {
+  // Send a IPC sync message to electron
+  // See main.js on line 42
+  document.getElementById('ping-bad-response').innerText = ipcRenderer.sendSync('ping-bad', 'ping')
+}
