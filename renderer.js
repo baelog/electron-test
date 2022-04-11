@@ -11,3 +11,16 @@ require('electron').ipcRenderer.on('asyncChannelToRenderer', (event, arg) => {
         event.sender.send('asyncChannelToMain', 'world')
     }
 })
+
+
+
+
+/*
+clients.on('data', (data) => {
+    console.log(data.toString());
+    clients.end();
+});
+
+clients.on('end', () => {
+    console.log('disconnected from server');
+});*/

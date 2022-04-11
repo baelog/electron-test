@@ -3,6 +3,8 @@ const { app, BrowserWindow, ipcMain } = require("electron");;
 
 const path = require('path')
 
+var net = require('net');
+
 function createWindow () {
   // Create the browser window.
     const mainWindow = new BrowserWindow({

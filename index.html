@@ -2,9 +2,30 @@
 <html>
   <head>
     <title>Hello World IPC</title>
-    <script src="renderer.js"></script>
+    <script>
+      require('electron').ipcRenderer.on('asyncChannelToRenderer', (event, arg) => {
+        console.log(arg + ' from main')
+        if (arg === 'hello') {
+          event.sender.send('asyncChannelToMain', 'world')
+        }
+      })
+    </script>
   </head>
   <body>
-    <button onclick="require('electron').ipcRenderer.send('asyncChannelToMain', 'hello')">click me</button>
+    <script>
+      const client = new require('net').Socket();
+      client.on('data', (data) => {
+        console.log(data.toString('utf-8'));
+      });
+
+      function button_pressed() 
+      {
+        require('electron').ipcRenderer.send('asyncChannelToMain', 'hello')
+        client.connect({ port: 59090, host: "127.0.0.1" });
+
+        console.log("la")
+      }
+    </script>
+    <button onclick="button_pressed()">click me</button>
   </body>
 </html>
